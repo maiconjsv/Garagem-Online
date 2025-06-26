@@ -1,0 +1,131 @@
+@charset "UTF-8";
+
+*{
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+header{
+    background-color: aqua;
+    height: 78vh;
+    width: 100%;
+    
+}
+.intro{
+    background-image: url(../imgs/intro-680px.jpg);
+    background-position: left;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    position: relative;
+}
+.intro h1{
+    margin-top: 125px;
+    padding: 23px;
+    text-align: left;
+    font-size: 41px;
+}
+.openLoginArea{
+    background-color: aqua;
+    width: 100%;
+    height: 7%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+
+
+
+
+
+.loginArea.loginAreaOpen{
+    left: 0px;
+    transition: all ease 0.5s;
+}
+
+
+#fecharLogin{
+    cursor: pointer;
+    margin-top: 10%;
+    margin-left: 70%;
+}
+
+.loginArea{
+    width: 100%;
+    height: 100%;
+    background-color: rgb(95, 158, 160);
+    position: fixed;
+    z-index: 5;
+    left: -10000px;
+    transition: all ease 0.7s;
+}
+.loginOrCadastro{
+    width: 100%;
+    height: 100%;
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+.login{
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    flex-direction: column;   
+    padding: 5px;
+    margin-top: 50%;
+}
+
+.cadastro{
+    display: flex;
+    margin-bottom: 50%;
+}
+
+
+.forms{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+/*Main*/
+main{
+    background-color: chartreuse;
+    display: flex;
+    flex-direction: column;
+}
+main section{
+    background-image: url(../imgs/resumo.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 21rem;
+}
+.resumo{
+    display: flex;
+    flex-direction: column;
+    
+}
+.resumo h2, 
+.resumo h3{
+    text-align: left;
+    padding: 10px;
+    margin-top: 10%;
+}

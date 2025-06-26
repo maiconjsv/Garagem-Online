@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de garagem</title>
+    <link rel="stylesheet" href="src/css/index-style.css">
+</head>
+<body>
+     <div class="loginArea">
+            <div class="loginOrCadastro">
+                <span id="fecharLogin">Voltar</span>
+                <div class="login">
+                    <h4>Realize o Login</h4>
+                    <form action="post" class="forms" id="formLogin">
+                        <label for="emailId">Email</label>
+                            <input required type="email" name="emailName" id="emailId" placeholder="Digite aqui seu Email">
+                        <label for="passwordId">Senha</label>
+                            <input required type="password" name="passwordName" id="passwordId" placeholder="Digite aqui sua senha">
+                        <button type="submit">Login</button>
+                        <button type="button" id="cadastroBtn">Realizar cadastro</button>
+                    </form>
+
+                </div>
+            <h4>Ou Cadastre-se</h4>
+                <div class="cadastro" id="cadastroId">
+                    <form action="post" class="forms" id="formCadastro">
+                        <label for="nameIdC">Seu nome</label>
+                            <input type="text" name="textName" required id="nameIdC">
+                        <label for="emailIdC">Seu Email</label>
+                            <input type="email" required name="emailNameC">
+                        <label for="senhaIdC">Crie uma senha</label>
+                            <input id="senhaidC" name="senhaNameC" required type="password">
+                        <label for="confirmeIdC">Confirme a senha</label>
+                            <input type="password" name="confirmeName" required id="confirmeIdC">
+                        <button type="submit">Cadastrar-se</button>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    <header>
+       
+        <div class="intro">
+            <h1>Controle de garagem online</h1>
+            
+            <div class="openLoginArea" id="openLoginAreaId">
+                <h4>Fazer Login ou cadastrar-se</h4>
+            </div>
+
+        </div>
+    </header>
+
+    <main>
+
+        <section>
+
+            <div class="resumo">
+                <h2>Fácil, rápido e simples</h2>
+                <h3>É só criar uma conta, cadastrar o veículos no pátio e controlar saída e entrada</h3>
+            </div>
+    
+        </section>
+
+    </main>
+
+
+
+
+    <script src="/src/js/logout-in.js"></script>
+</body>
+</html>

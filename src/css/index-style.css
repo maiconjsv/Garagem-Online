@@ -7,7 +7,7 @@
 }
 
 header{
-    background-color: aqua;
+    background-color: rgb(0, 0, 0);
     height: 78vh;
     width: 100%;
     
@@ -27,21 +27,23 @@ header{
     position: relative;
 }
 .intro h1{
-    margin-top: 125px;
+    margin-top: 10px;
     padding: 23px;
     text-align: left;
     font-size: 41px;
     color: white;
-    text-shadow: black 2px 3px ;
+    text-shadow: black 6px 3px ;
+    
 }
 .openLoginArea{
-    background-color: aqua;
+    background-color: rgb(0, 0, 0);
     width: 100%;
     height: 7%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    color: white;
 }
 
 
@@ -64,11 +66,12 @@ header{
 .loginArea{
     width: 100%;
     height: 100%;
-    background-color: rgb(95, 158, 160);
+    background-color: rgb(0, 0, 0);
     position: fixed;
     z-index: 5;
     left: -10000px;
     transition: all ease 0.7s;
+    color: wheat;
 }
 .loginOrCadastro{
     width: 100%;
@@ -106,7 +109,7 @@ header{
 
 /*Main*/
 main{
-    background-color: chartreuse;
+    background-color: rgb(0, 0, 0);
     display: flex;
     flex-direction: column;
 }
@@ -140,7 +143,8 @@ footer{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: blueviolet;
+    background-color: rgb(0, 0, 0);
+    color: white;
 }
 footer nav ul{
     display: flex;
@@ -153,3 +157,99 @@ footer nav ul a{
     text-decoration: none;
     color: white;
 }
+footer small{
+    padding: 6px;
+}
+
+
+@media (min-width:768px) {
+    .intro{
+        flex-direction: row;
+        align-items: center;
+        background-image: url(../imgs/intro-1400px.jpg);
+        background-position: left;
+        background-size: cover;
+    }
+    .openLoginArea{
+        height: 100%;
+        width: 30%;
+        transition: all ease 0.5s;
+    }
+    .openLoginArea:hover{
+        width: 50%;
+        transition: all ease 0.5s;
+    }
+    main section{
+    background-image: url();
+    background-position: left;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 28rem;
+}
+    .resumo{
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        margin-top: 0;
+    }
+    .resumo h2, 
+    .resumo h3{
+        text-align: left;
+        padding: 10px;
+        margin-top: 5%;
+        color: white;
+        text-shadow: black 3px 3px;
+        font-size: 45px;
+    }
+    footer{
+        background-color: rgb(17, 17, 17);
+    }
+    footer nav ul{
+    gap: 50px;
+    justify-content: space-between;
+    }
+    footer p{
+        padding: 10px;
+    }
+
+    .loginArea.loginAreaOpen{
+    left: 0vw;
+    transition: all ease 0.5s;
+    background-color: brown;
+    }
+       .loginArea {
+        width: 100%;
+        height: 100%;
+        background-color: rgb(0, 0, 0);
+        position: fixed;
+        z-index: 5;
+        left: -100vw;
+        transition: all ease 0.7s;
+        color: wheat;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .loginOrCadastro{
+    width: 80%;
+    height: 50%;
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    padding: 20px;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(0, 255, 255);
+    
+    }
+    .login{ 
+    padding: 5px;
+    margin-top: 1px;
+    }
+    .cadastro{
+    display: flex;
+    margin-bottom: 0;
+    }
+}   

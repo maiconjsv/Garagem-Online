@@ -31,6 +31,8 @@ header{
     padding: 23px;
     text-align: left;
     font-size: 41px;
+    color: white;
+    text-shadow: black 2px 3px ;
 }
 .openLoginArea{
     background-color: aqua;
@@ -128,4 +130,26 @@ main section{
     text-align: left;
     padding: 10px;
     margin-top: 10%;
+    color: white;
+    text-shadow: black 3px 3px;
+}
+
+/*footer*/
+footer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: blueviolet;
+}
+footer nav ul{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    flex-wrap: wrap;
+    list-style: none;
+}
+footer nav ul a{
+    text-decoration: none;
+    color: white;
 }

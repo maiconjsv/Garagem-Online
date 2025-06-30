@@ -120,8 +120,53 @@ main{
         }
 
 
+    .carConsult{
+        display: flex;
+        flex-direction: column;
+        background-color: orange;
+        height: 100%;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition: all ease 0.5s;
+    }
+
+    .carConsult input{
+        height: 10%;
+        width: 50%;
+        border-radius: 3px;
+        border: none;
+        font-size: 17px;
+        text-align: center;
+        border: solid rgb(6, 65, 6);
+    }
+
+    .carConsult button{
+        width: 45%;
+        height: 11%;
+        cursor: pointer;
+    }
+
+    .carConsult.carConsultOff{
+        display: none;
+    }
 
 
+    #consultInfos{
+        height: 30%;
+        width: 100%;
+        background-color: rgb(6, 65, 6) ;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        flex-direction: column;
+    }
+    #consultInfos p{
+        color: white;
+        font-size: 20px;
+    }
 
 
 @media (min-width:768px){

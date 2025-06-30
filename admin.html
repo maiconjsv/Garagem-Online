@@ -38,22 +38,26 @@
             <div class="higienStart wOff" id="higienRegister">
                 <p>Informações do veículo higienizado</p>
                 <input type="text" placeholder="Placa" id="placaInput" maxlength="7" minlength="7" required  pattern="[A-Z]{3}[0-9][A-Z][0-9]{2}">
-                <input type="text" placeholder="Modelo do veículo" required>
-                <input type="text" placeholder="Cor" required>
+                <input type="text" placeholder="Modelo do veículo" id="modeloInput" required>
+                <input type="text" placeholder="Cor" required id="corInput">
                 <input type="date" name="" id="dataInput" required>
                 <button id="registerHigien">Registrar</button>
                 <button id="backToWorkLinks">Voltar</button>
             </div>
 
-            <div class="carConsult" id="carConsultId">
-                <input type="text" axlength="7" minlength="7" required placeholder="Digite a Placa">
-                <button>Consultar</button>
+            <div class="carConsult carConsultOff" id="carConsultId">
+                <div id="consultInfos">
+                    <p>Consultar veículo</p>
+                </div>
+                <input type="text" axlength="7" minlength="7" required placeholder="Digite a Placa" id="carPlacaConsult">
+                <button id="carConsultButton">Consultar</button>
                 <button id="backToWorkLinksConsult">Voltar</button>
             </div>
         </div>
     </main>
 
     <!-- SEMPRE carregue os SDKs do Firebase primeiro -->
-    <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.8.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-firestore.js"></script>
     <script src="src/js/admin.js"></script>

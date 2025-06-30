@@ -99,6 +99,8 @@ main{
     }
     .higienStart input{
         text-align: center;
+        border: solid rgb(6, 65, 6);
+        
     }
 
     #placaInput{

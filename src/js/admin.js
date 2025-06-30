@@ -21,7 +21,7 @@
 
         // *** AQUI É A PARTE CRÍTICA DA PROTEÇÃO! ***
         // Monitorar o estado da autenticação ao carregar esta página
-  /*      auth.onAuthStateChanged((user) => {
+        auth.onAuthStateChanged((user) => {
             if (user) {
                 // Usuário está logado
                 console.log("Usuário logado no Painel:", user.email, user.uid);
@@ -40,7 +40,7 @@
                 window.location.assign('/index.html');
             }
         });
-*/
+
 
 
 

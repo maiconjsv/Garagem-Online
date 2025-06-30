@@ -6,250 +6,139 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
-header{
-    background-color: rgb(0, 0, 0);
-    height: 78vh;
-    width: 100%;
-    
-}
-.intro{
-    background-image: url(../imgs/intro-680px.jpg);
-    background-position: left;
-    background-repeat: no-repeat;
-    background-size: cover;
-    width: 100%;
-    height: 100%;
+
+body{
+    background-color: rgb(21, 75, 21);
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    position: relative;
-}
-.intro h1{
-    margin-top: 10px;
-    padding: 23px;
-    text-align: left;
-    font-size: 41px;
-    color: white;
-    text-shadow: black 6px 3px ;
-    
-}
-.openLoginArea{
-    background-color: rgb(0, 0, 0);
+    align-items: center;
+    justify-content: center;
+    height: 100%;
     width: 100%;
-    height: 7%;
+    background-color: rgb(253, 176, 34);
+}
+
+header{
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    color: white;
-}
-
-
-
-
-
-
-.loginArea.loginAreaOpen{
-    left: 0px;
-    transition: all ease 0.5s;
-}
-
-
-#fecharLogin{
-    cursor: pointer;
-    margin-top: 10%;
-    margin-left: 70%;
-}
+    background-color: rgb(21, 75, 21);
+    }
+    header h1{
+        margin-top: 23%;
+        text-align: center;
+        padding: 16px;
+        color: white;
+        font-size: 35px;
+    }
 
 .loginArea{
-    width: 100%;
-    height: 100%;
-    background-color: rgb(0, 0, 0);
-    position: fixed;
-    z-index: 5;
-    left: -10000px;
-    transition: all ease 0.7s;
-    color: wheat;
-}
-.loginOrCadastro{
-    width: 100%;
-    height: 100%;
-    margin-bottom: 0;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    position: relative;
-}
-.login{
-    display: flex;
-    align-items: center;
-    justify-content: center; 
-    flex-direction: column;   
-    padding: 5px;
-    margin-top: 50%;
-}
-
-.cadastro{
-    display: flex;
-    margin-bottom: 50%;
-}
-
-
-.forms{
-    display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-}
-
-
-
-/*Main*/
-main{
-    background-color: rgb(0, 0, 0);
-    display: flex;
-    flex-direction: column;
-}
-main section{
-    background-image: url(../imgs/resumo.jpg);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 21rem;
-}
-.resumo{
-    display: flex;
-    flex-direction: column;
-    
-}
-.resumo h2, 
-.resumo h3{
-    text-align: left;
     padding: 10px;
-    margin-top: 10%;
-    color: white;
-    text-shadow: black 3px 3px;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
 }
-
-/*footer*/
-footer{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: rgb(0, 0, 0);
-    color: white;
-}
-footer nav ul{
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    flex-wrap: wrap;
-    list-style: none;
-}
-footer nav ul a{
-    text-decoration: none;
-    color: white;
-}
-footer small{
-    padding: 6px;
-}
+    .login{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgb(253, 176, 34);
+        border-radius: 30%;
+        width: 70vw;
+        box-shadow: rgba(0, 0, 0, 0.445) 4px 6px 4px;
+    }
+        .login form{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 20px;
+        }
+            .login form h3{
+                margin-top: 20px;
+                }
+                .login form input{
+                    width: 85%;
+                    height: 1.6rem;
+                    border-radius: 10px;
+                    border: none;
+                }
 
 
 @media (min-width:768px) {
-    .intro{
+    header{
+        margin: 0;
+        width: 100%;
+        align-items: flex-start;
+        justify-content: center;
+    }
+    header h1{
+        font-size: 57px;
+        margin-top: 40%;
+    }
+    .loginArea{
+        border-radius: 20%;
+        width: 40vw;
+        height: 40vh;
+        padding: 40px;
+        }
+        #auth-ui{
+            font-size: 40px;
+        }
+            #auth-ui label{
+                font-size: 35px;
+            }
+                #auth-ui input{
+                    width: 350px;
+                    height: 3rem;
+                    font-size: 30px;
+                }
+                    #auth-ui button{
+                        width: 40%;
+                        height: 2.3rem;
+                        font-size: 30px;
+                        border: none;
+                        box-shadow: rgba(0, 0, 0, 0.418) 1px 1px;
+                    }
+        }
+
+@media (min-width:1250px){
+    body{
         flex-direction: row;
         align-items: center;
-        background-image: url(../imgs/intro-1400px.jpg);
-        background-position: left;
-        background-size: cover;
-    }
-    .openLoginArea{
-        height: 100%;
-        width: 30%;
-        transition: all ease 0.5s;
-    }
-    .openLoginArea:hover{
-        width: 50%;
-        transition: all ease 0.5s;
-    }
-    main section{
-    background-image: url();
-    background-position: left;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 28rem;
-}
-    .resumo{
-        display: flex;
-        align-items: flex-start;
-        justify-content: flex-start;
-        margin-top: 0;
-    }
-    .resumo h2, 
-    .resumo h3{
-        text-align: left;
-        padding: 10px;
-        margin-top: 5%;
-        color: white;
-        text-shadow: black 3px 3px;
-        font-size: 45px;
-    }
-    footer{
-        background-color: rgb(17, 17, 17);
-    }
-    footer nav ul{
-    gap: 50px;
-    justify-content: space-between;
-    }
-    footer p{
-        padding: 10px;
-    }
-
-    .loginArea.loginAreaOpen{
-    left: 0vw;
-    transition: all ease 0.5s;
-    background-color: brown;
-    }
-       .loginArea {
-        width: 100%;
-        height: 100%;
-        background-color: rgb(0, 0, 0);
-        position: fixed;
-        z-index: 5;
-        left: -100vw;
-        transition: all ease 0.7s;
-        color: wheat;
-        display: flex;
         justify-content: center;
-        align-items: center;
+        height: 100%;
     }
-    .loginOrCadastro{
-    width: 80%;
-    height: 50%;
-    margin-bottom: 0;
-    display: flex;
-    flex-direction: row;
-    gap: 40px;
-    padding: 20px;
-    align-items: center;
-    justify-content: center;
-    background-color: rgb(0, 255, 255);
-    
-    }
-    .login{ 
-    padding: 5px;
-    margin-top: 1px;
-    }
-    .cadastro{
-    display: flex;
-    margin-bottom: 0;
-    }
-}   
+        header{
+            height: 100vh;
+            align-items: center;
+        }
+            header h1{
+                text-align: left;
+                margin-top: 30px;
+            }
+        .loginArea{
+            width: 500px;
+            height: 100%;
+            padding: 0;
+            background-color: rgb(253, 176, 34);
+        }
+            
+        main{
+            height: 100vh;
+            
+        }
+}
+
+
+
+
+
+
+
+
+

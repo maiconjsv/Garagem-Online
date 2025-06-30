@@ -5,89 +5,128 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Garagem Online</title>
     <link rel="stylesheet" href="src/css/index-style.css">
+    <style>
+        /* Você já tem isso, o que é ótimo para esconder a info de usuário quando não logado */
+        #user-info { display: none; }
+    </style>
 </head>
 <body>
-     <div class="loginArea loginAreaO">
-            <div class="loginOrCadastro">
-                <span id="fecharLogin">Voltar</span>
-                <div class="login">
-                    <h4>Realize o Login</h4>
-                    <form action="post" class="forms" id="formLogin">
-                        <label for="emailId">Email</label>
-                            <input required type="email" name="emailName" id="emailId" placeholder="Digite aqui seu Email">
-                        <label for="passwordId">Senha</label>
-                            <input required type="password" name="passwordName" id="passwordId" placeholder="Digite aqui sua senha">
-                        <button type="submit">Login</button>
-                    </form>
-
-                </div>
-            <h4>Ou Cadastre-se</h4>
-                <div class="cadastro" id="cadastroId">
-                    <form action="post" class="forms" id="formCadastro">
-                        <label for="nameIdC">Seu nome</label>
-                            <input type="text" name="textName" required id="nameIdC">
-                        <label for="emailIdC">Seu Email</label>
-                            <input type="email" required name="emailNameC">
-                        <label for="senhaIdC">Crie uma senha</label>
-                            <input id="senhaidC" name="senhaNameC" required type="password">
-                        <label for="confirmeIdC">Confirme a senha</label>
-                            <input type="password" name="confirmeName" required id="confirmeIdC">
-                        <button type="submit" style="width: auto;">Cadastrar-se</button>
-                    </form>
-
-                </div>
-
-            </div>
-        </div>
-
-
-
-
     <header>
-       
-        <div class="intro">
-            <h1>Controle de garagem online</h1>
-            
-            <div class="openLoginArea" id="openLoginAreaId">
-                <h4>Fazer Login ou cadastrar-se</h4>
-            </div>
-
-        </div>
+        <h1>Controle de higienização de frota</h1>
     </header>
-
     <main>
+        <section class="loginArea">
 
-        <section>
+           <div id="auth-ui">
+                <h2>Login</h2>
+                <input type="email" id="email" placeholder="Email" /><br><br>
+                <input type="password" id="password" placeholder="Senha" /><br><br>
+                <!--<button id="signUpButton">Cadastrar</button> removido-->
+                <button id="signInButton">Entrar</button>
+           </div>
 
-            <div class="resumo">
-                <h2>Fácil, rápido e simples</h2>
-                <h3>É só criar uma conta e começar a controlar os veículos no seu pátio ou garagem, totalmente <span style="color: red;">gratuito</span>!</h3>
-            </div>
-    
+           <div id="user-info">
+                <h2>Usuário Logado</h2>
+                <p><strong>Email:</strong> <span id="user-email"></span></p>
+                <p><strong>UID:</strong> <span id="user-uid"></span></p>
+                <button id="signOutButton">Sair</button>
+           </div>
+
         </section>
-
     </main>
 
-    <footer>
-        <p>Garagem Online</p>
-        <nav>
-            <ul>
-                <a href="admin.html">
-                    <li>Termos de uso</li>
-                </a>
-                <a href="#">
-                    <li>Suporte</li>
-                </a>
-                <a href="#">
-                    <li>Sobre o criador</li>
-                </a>
-            </ul>
-        </nav>
-        <small>Site livre e gratuito</small>
-    </footer>
+    <!-- O core do Firebase SDK é sempre necessário e deve ser listado primeiro -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-app.js"></script>
 
+    <!-- SDK para o Firebase Authentication -->
+    <script src="https://www.gstatic.com/firebasejs/7.8.0/firebase-auth.js"></script>
 
+    <!-- SEU CÓDIGO JAVASCRIPT AGORA VEM AQUI, DEPOIS DOS SDKs DO FIREBASE -->
+    <script>
+        // Não precisamos do import aqui, pois os scripts acima já colocaram 'firebase' no escopo global
+        // import { initializeApp } from "firebase/app"; // REMOVIDO
 
-    <script src="src/js/logout-in.js"></script>
+        // Sua configuração do Firebase (está correta!)
+        const firebaseConfig = {
+          apiKey: "AIzaSyCy3aUY2OWKXFMyZBkX1NQEL8haZbdHSyk",
+          authDomain: "garagem-online-34080.firebaseapp.com",
+          projectId: "garagem-online-34080",
+          storageBucket: "garagem-online-34080.firebasestorage.app",
+          messagingSenderId: "804666498964",
+          appId: "1:804666498964:web:934f99d6b039c453eaf981"
+        };
+
+        // Initialize Firebase usando a API de namespace (v7)
+        firebase.initializeApp(firebaseConfig);
+
+        // Obtenha a instância de autenticação diretamente do objeto global 'firebase'
+        const auth = firebase.auth(); // <-- CORREÇÃO AQUI!
+
+        // Referências aos elementos HTML
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const signUpButton = document.getElementById('signUpButton');
+        const signInButton = document.getElementById('signInButton');
+        const signOutButton = document.getElementById('signOutButton'); // Este botão estava fora do auth-ui original
+        const authUiDiv = document.getElementById('auth-ui');
+        const userInfoDiv = document.getElementById('user-info');
+        const userEmailSpan = document.getElementById('user-email');
+        const userUidSpan = document.getElementById('user-uid');
+
+        // Monitorar o estado da autenticação
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // Usuário está logado
+                console.log("Usuário logado:", user.email, user.uid);
+                userInfoDiv.style.display = 'block'; // Mostra informações do usuário
+                authUiDiv.style.display = 'none';    // Esconde a UI de login/cadastro
+            } else {
+                // Usuário não está logado
+                console.log("Nenhum usuário logado.");
+                userInfoDiv.style.display = 'none'; // Esconde informações do usuário
+                authUiDiv.style.display = 'block';   // Mostra a UI de login/cadastro
+            }
+        });
+
+        // Funções para cadastro, login e logout
+
+        signInButton.addEventListener('click', () => {
+            const email = emailInput.value;
+            const password = passwordInput.value;
+
+            //  'auth' já é a instância de autenticação
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Login bem-sucedido
+                    const user = userCredential.user;
+                    console.log("Login realizado com sucesso:", user.email);
+                    alert("Login realizado com sucesso!");
+                    // onAuthStateChanged irá lidar com a atualização da UI
+                    // REDIRECIONAR PARA A PÁGINA PROTEGIDA
+            window.location.assign('/admin.html'); 
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    console.error("Erro no login:", errorMessage, errorCode);
+                    alert(`Erro no login: ${errorMessage}`);
+                });
+        });
+
+        signOutButton.addEventListener('click', () => {
+            // Use 'auth' que já é a instância de autenticação
+            auth.signOut()
+                .then(() => {
+                    // Logout bem-sucedido
+                    console.log("Usuário deslogado com sucesso.");
+                    alert("Você saiu da sua conta.");
+                    // onAuthStateChanged irá lidar com a atualização da UI
+                })
+                .catch((error) => {
+                    console.error("Erro ao deslogar:", error.message);
+                    alert(`Erro ao deslogar: ${error.message}`);
+                });
+        });
+    </script>
 </body>
 </html>

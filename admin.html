@@ -34,6 +34,7 @@
         <div class="workSpace">
             <div class="workLink " id="workStart">Registrar Higienização</div>
             <div class="workLink " id="consult">Consultar veículo</div>
+            <div class="workLink" id="removeCar">Registrar Saida de veículo </div>
 
             <div class="higienStart wOff" id="higienRegister">
                 <p>Informações do veículo higienizado</p>
@@ -52,6 +53,21 @@
                 <input type="text" axlength="7" minlength="7" required placeholder="Digite a Placa" id="carPlacaConsult">
                 <button id="carConsultButton">Consultar</button>
                 <button id="backToWorkLinksConsult">Voltar</button>
+            </div>
+
+            <div class="removeCarWork removeCarWorkOff" id="removeCarWorkId">
+                <p>Saida de veículo do pátio</p>
+                    <input type="text" name="" id="placaSaida" placeholder="Digite A placa" required>
+                    <input type="text" placeholder="Motivo" required id="motivoSaida">
+                    <button id="registrarSaida">Registrar Saida</button>
+                    <button id="closeRemoveCarWork">Voltar</button>
+            </div>
+
+
+            <div class="patioDiv patioDivOff" id="patioDivId">
+                <p>Total de veículos no pátio...</p>
+                <p>Última Higienização...</p>
+                <button id="patioCloseButton">Fechar</button>
             </div>
         </div>
     </main>

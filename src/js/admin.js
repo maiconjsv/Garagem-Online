@@ -19,6 +19,9 @@ const companyInfoDiv = document.getElementById('companyInfo');
 const logoutButton = document.getElementById('logoutButton');
 
 // Monitorar o estado da autenticação (executa quando o app Firebase estiver pronto)
+
+
+/*
 auth.onAuthStateChanged((user) => {
     if (user) {
         console.log("Usuário logado no Painel:", user.email, user.uid);
@@ -29,6 +32,9 @@ auth.onAuthStateChanged((user) => {
         window.location.assign('/index.html');
     }
 });
+*/
+
+
 
 // Lógica para o botão de Desconectar-se
 logoutButton.addEventListener('click', () => {
@@ -155,6 +161,37 @@ document.addEventListener('DOMContentLoaded', () => {
             licensePlateInput.value = '';
         }
     });
+
+    //Lógica da seção de SubInfos  ===========
+    const patioLink = document.querySelector('#patioLink')
+    const patioDiv = document.querySelector('.patioDiv')
+    const fecharPatioDiv = document.querySelector('#patioCloseButton')
+
+    patioLink.addEventListener('click', () =>{
+        esconderHud.forEach(div => div.classList.add('workLinkOff'));
+        patioDiv.classList.remove('patioDivOff')
+    })
+
+    fecharPatioDiv.addEventListener('click', () =>{
+        patioDiv.classList.add('patioDivOff')
+        esconderHud.forEach(div => div.classList.remove('workLinkOff'));
+    })
+
+
+    const removeCarWork = document.querySelector('.removeCarWork')
+    const closeRemoveCarWork = document.querySelector('#closeRemoveCarWork')
+    const removeCarLink = document.querySelector('#removeCar')
+    
+    removeCarLink.addEventListener('click', () =>{
+        esconderHud.forEach(div => div.classList.add('workLinkOff'));
+        removeCarWork.classList.remove('removeCarWorkOff')
+    })
+
+    closeRemoveCarWork.addEventListener('click', () =>{
+        removeCarWork.classList.add('removeCarWorkOff')
+        esconderHud.forEach(div => div.classList.remove('workLinkOff'));
+    })
+
 
 
     // =============================================================

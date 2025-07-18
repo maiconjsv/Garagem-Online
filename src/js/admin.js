@@ -1,6 +1,6 @@
-
+// --- SEU CÓDIGO EXISTENTE INÍCIO ---
 const firebaseConfig = {
-    apiKey: "AIzaSyCy3aUY2OWKXFMyZBkX1NQEL8haZbdHSyk", 
+    apiKey: "AIzaSyCy3aUY2OWKXFMyZBkX1NQEL8haZbdHSyk",
     authDomain: "garagem-online-34080.firebaseapp.com",
     projectId: "garagem-online-34080",
     storageBucket: "garagem-online-34080.firebasestorage.app",
@@ -13,7 +13,7 @@ const app = firebase.initializeApp(firebaseConfig);
 const auth = app.auth();
 const db = app.firestore();
 
-// Referências aos elementos HTML da header 
+// Referências aos elementos HTML da header
 const nameInfoDiv = document.getElementById('nameInfo');
 const companyInfoDiv = document.getElementById('companyInfo');
 const logoutButton = document.getElementById('logoutButton');
@@ -21,7 +21,6 @@ const logoutButton = document.getElementById('logoutButton');
 // Monitorar o estado da autenticação (executa quando o app Firebase estiver pronto)
 
 
-/*
 auth.onAuthStateChanged((user) => {
     if (user) {
         console.log("Usuário logado no Painel:", user.email, user.uid);
@@ -32,8 +31,6 @@ auth.onAuthStateChanged((user) => {
         window.location.assign('/index.html');
     }
 });
-*/
-
 
 
 // Lógica para o botão de Desconectar-se
@@ -121,10 +118,18 @@ async function registrarVeiculoHigienizado() {
 // dentro de um DOMContentLoaded para garantir que os elementos HTML existam.
 document.addEventListener('DOMContentLoaded', () => {
 
-    // Chamada da função de registro de veículo (aqui ela será configurada)
-    registrarVeiculoHigienizado();
+    // --- NOVO: CAPTURA DE REFERÊNCIAS PARA A SEÇÃO DE SAÍDA DE VEÍCULOS ---
+    // Essas variáveis precisam ser definidas AQUI dentro do DOMContentLoaded
+    // para que o listener do registrarSaidaButton as "enxergue".
+    const placaSaidaInput = document.getElementById("placaSaida");
+    const motivoSaidaInput = document.getElementById("motivoSaida"); // Renomeado para clareza
+    const registrarSaidaButton = document.getElementById("registrarSaida");
+    const removeCarWorkDiv = document.getElementById("removeCarWorkId");
 
-    // Funcionamento da seção WorkLink (seus seletores e listeners)
+
+    // Chamada da função de registro de veículo 
+
+    // Funcionamento da seção WorkLink (seletores e listeners)
     const registrarHigien = document.querySelector('.higienStart');
     const startHigien = document.getElementById('workStart');
     const esconderHud = document.querySelectorAll('.workLink');
@@ -156,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (consultInfos) {
             consultInfos.innerHTML = '<p>Aguardando consulta da placa...</p>';
         }
-        // Opcional: Limpar o input da placa ao voltar
+        //  Limpar o input da placa ao voltar
         if (licensePlateInput) {
             licensePlateInput.value = '';
         }
@@ -167,12 +172,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const patioDiv = document.querySelector('.patioDiv')
     const fecharPatioDiv = document.querySelector('#patioCloseButton')
 
-    patioLink.addEventListener('click', () =>{
+    patioLink.addEventListener('click', () => {
         esconderHud.forEach(div => div.classList.add('workLinkOff'));
         patioDiv.classList.remove('patioDivOff')
     })
 
-    fecharPatioDiv.addEventListener('click', () =>{
+    fecharPatioDiv.addEventListener('click', () => {
         patioDiv.classList.add('patioDivOff')
         esconderHud.forEach(div => div.classList.remove('workLinkOff'));
     })
@@ -181,21 +186,95 @@ document.addEventListener('DOMContentLoaded', () => {
     const removeCarWork = document.querySelector('.removeCarWork')
     const closeRemoveCarWork = document.querySelector('#closeRemoveCarWork')
     const removeCarLink = document.querySelector('#removeCar')
-    
-    removeCarLink.addEventListener('click', () =>{
+
+    removeCarLink.addEventListener('click', () => {
         esconderHud.forEach(div => div.classList.add('workLinkOff'));
         removeCarWork.classList.remove('removeCarWorkOff')
     })
 
-    closeRemoveCarWork.addEventListener('click', () =>{
+    // Listener para o botão de "Voltar" da tela de saída
+    closeRemoveCarWork.addEventListener('click', () => {
         removeCarWork.classList.add('removeCarWorkOff')
         esconderHud.forEach(div => div.classList.remove('workLinkOff'));
+        // Adicionado: Limpar os campos ao fechar a tela de saída
+        if (placaSaidaInput) placaSaidaInput.value = '';
+        if (motivoSaidaInput) motivoSaidaInput.value = '';
     })
 
 
+    // --- NOVO: LÓGICA DE REGISTRAR SAÍDA DE VEÍCULOS (MOVEU PARA CÁ!) ---
+    // Este listener AGORA tem acesso a placaSaidaInput, motivoSaidaInput, registrarSaidaButton, removeCarWorkDiv
+    registrarSaidaButton.addEventListener("click", async () => {
+        const placaDigitada = placaSaidaInput.value.trim().toUpperCase();
+        const motivoSaida = motivoSaidaInput.value.trim(); // Usa a variável corrigida
+
+        if (!placaDigitada) {
+            alert("Por favor, digite a placa do veículo para registrar a saída.");
+            return;
+        }
+
+        if (!motivoSaida) {
+            alert("Por favor, digite o motivo da saída do veículo.");
+            return;
+        }
+
+        // Confirmação para o usuário
+        const confirmarSaida = confirm(`Tem certeza que deseja registrar a saída do veículo de placa "${placaDigitada}"?`);
+        if (!confirmarSaida) {
+            return; // Usuário cancelou
+        }
+
+        // Verificar se o usuário está autenticado antes de prosseguir
+        if (!auth.currentUser) {
+            alert('Você precisa estar logado para registrar a saída de veículos.');
+            console.warn('Operação negada: Usuário não autenticado.');
+            return;
+        }
+
+        try {
+            const veiculosCollectionRef = db.collection("veiculosHigienizados");
+
+            const querySnapshot = await veiculosCollectionRef.where("placa", "==", placaDigitada).get();
+
+            if (querySnapshot.empty) {
+                alert(`Veículo com a placa "${placaDigitada}" não encontrado nos registros de higienização.`);
+                console.warn(`Tentativa de registrar saída de veículo não existente: ${placaDigitada}`);
+            } else {
+                querySnapshot.forEach(async (documentoVeiculo) => {
+                    const documentId = documentoVeiculo.id;
+                    const docRef = veiculosCollectionRef.doc(documentId);
+
+                    await docRef.update({
+                        status: "saida_patio",
+                        dataSaida: new Date(),
+                        motivoSaida: motivoSaida,
+                        registradoPorSaida: auth.currentUser.uid
+                    });
+
+                    alert(`Saída do veículo de placa "${placaDigitada}" registrada com sucesso!`);
+                    console.log(`Documento do veículo ${placaDigitada} (ID: ${documentId}) atualizado para 'saída_patio'.`);
+
+                    // Limpar os campos e fechar a div após sucesso
+                    placaSaidaInput.value = '';
+                    motivoSaidaInput.value = '';
+                    removeCarWorkDiv.classList.add("removeCarWorkOff");
+                    // Opcional: Voltar os outros elementos para o estado original (se necessário)
+                    esconderHud.forEach(div => div.classList.remove('workLinkOff'));
+                });
+            }
+
+        } catch (error) {
+            console.error("Erro ao registrar saída do veículo:", error);
+            alert(`Ocorreu um erro ao registrar a saída: ${error.message}. Verifique o console para mais detalhes.`);
+
+            if (error.code === 'permission-denied') {
+                alert("Erro de permissão: Você não tem autorização para registrar a saída. Verifique se está logado.");
+            }
+        }
+    });
 
     // =============================================================
-    // LÓGICA DE CONSULTA DE VEÍCULOS (seus seletores e listeners)
+    // LÓGICA DE CONSULTA DE VEÍCULOS 
     // ESTES ELEMENTOS SÃO GARANTIDOS DE EXISTIREM AQUI DENTRO DO DOMContentLoaded
     const licensePlateInput = document.getElementById('carPlacaConsult');
     const consultCarButton = document.getElementById('carConsultButton');
@@ -227,8 +306,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const veiculosCollectionRef = db.collection("veiculosHigienizados");
 
                 const querySnapshot = await veiculosCollectionRef
-                                            .where('placa', '==', licensePlate)
-                                            .get();
+                    .where('placa', '==', licensePlate)
+                    .get();
 
                 if (querySnapshot.empty) {
                     console.log('Nenhum veículo higienizado encontrado com esta placa.');
@@ -239,24 +318,54 @@ document.addEventListener('DOMContentLoaded', () => {
                         const dadosVeiculo = doc.data();
                         console.log(`Veículo encontrado: ${doc.id} => `, dadosVeiculo);
 
-                        let dataFormatada = 'N/A';
+                        let dataFormatadaHigienizacao = 'N/A';
                         if (dadosVeiculo.dataHigienizacao && typeof dadosVeiculo.dataHigienizacao.toDate === 'function') {
-                            dataFormatada = dadosVeiculo.dataHigienizacao.toDate().toLocaleDateString('pt-BR');
+                            dataFormatadaHigienizacao = dadosVeiculo.dataHigienizacao.toDate().toLocaleDateString('pt-BR');
                         } else if (dadosVeiculo.dataHigienizacao) {
                             try {
-                                dataFormatada = new Date(dadosVeiculo.dataHigienizacao).toLocaleDateString('pt-BR');
+                                dataFormatadaHigienizacao = new Date(dadosVeiculo.dataHigienizacao).toLocaleDateString('pt-BR');
                             } catch (e) {
-                                dataFormatada = dadosVeiculo.dataHigienizacao;
+                                dataFormatadaHigienizacao = dadosVeiculo.dataHigienizacao;
                             }
                         }
+
+                        // --- NOVO: LÓGICA PARA EXIBIR O STATUS DE SAÍDA ---
+                        let statusVeiculo = dadosVeiculo.status || 'no_patio'; // Assume 'no_patio' se não houver status
+                        let infoSaida = '';
+
+                        if (statusVeiculo === 'saida_patio') {
+                            let dataSaidaFormatada = 'N/A';
+                            // Verifica se dataSaida é um Timestamp do Firebase ou uma string/data normal
+                            if (dadosVeiculo.dataSaida && typeof dadosVeiculo.dataSaida.toDate === 'function') {
+                                dataSaidaFormatada = dadosVeiculo.dataSaida.toDate().toLocaleDateString('pt-BR') + ' às ' + dadosVeiculo.dataSaida.toDate().toLocaleTimeString('pt-BR');
+                            } else if (dadosVeiculo.dataSaida) {
+                                try {
+                                    // Tenta converter para Date caso seja uma string de data
+                                    dataSaidaFormatada = new Date(dadosVeiculo.dataSaida).toLocaleDateString('pt-BR') + ' às ' + new Date(dadosVeiculo.dataSaida).toLocaleTimeString('pt-BR');
+                                } catch (e) {
+                                    // Se não for uma data válida, exibe como está
+                                    dataSaidaFormatada = dadosVeiculo.dataSaida;
+                                }
+                            }
+                            infoSaida = `<p style="color: red; font-weight: bold;">STATUS: SAÍDA DO PÁTIO</p>
+                                         <p><strong>Data da Saída:</strong> ${dataSaidaFormatada}</p>
+
+                                         <p><strong>Motivo da Saída:</strong> ${dadosVeiculo.motivoSaida || 'N/A'}</p>
+                                         <p><strong>Registrado por (Saída):</strong> ${dadosVeiculo.registradoPorSaida || 'N/A'}</p>`;
+                        } else {
+                            infoSaida = `<p style="color: green; font-weight: bold;">STATUS: NO PÁTIO</p>`;
+                        }
+                        // --- FIM DA LÓGICA DE EXIBIÇÃO DE STATUS ---
+
 
                         htmlContent += `
                             <div style="border-bottom: 1px dashed #eee; padding-bottom: 10px; margin-bottom: 10px;">
                                 <p><strong>Placa:</strong> ${dadosVeiculo.placa}</p>
                                 <p><strong>Modelo:</strong> ${dadosVeiculo.modelo}</p>
                                 <p><strong>Cor:</strong> ${dadosVeiculo.cor}</p>
-                                <p><strong>Última Higienização:</strong> ${dataFormatada}</p>
-                                <p><strong>Registrado por (UID):</strong> ${dadosVeiculo.userId || 'N/A'}</p>
+                                <p><strong>Última Higienização:</strong> ${dataFormatadaHigienizacao}</p>
+                                <p><strong>Registrado por (Higienização):</strong> ${dadosVeiculo.userId || 'N/A'}</p>
+                                ${infoSaida} <!-- Insere as informações de status aqui -->
                             </div>
                         `;
                     });

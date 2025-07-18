@@ -162,7 +162,7 @@ main{
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 10px;
+        padding: 20px;
         flex-direction: column;
     }
     #consultInfos p{
@@ -211,6 +211,25 @@ main{
         height: 11%;
         cursor: pointer;
     }
+
+    footer{
+        background-color: orange;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+        height: 5%;
+        gap: 20px;
+    }
+    footer small{
+        color: black;
+    }
+    footer small a{
+        text-decoration: none;
+        color: black;
+    }
+
 
 
 @media (min-width:768px){

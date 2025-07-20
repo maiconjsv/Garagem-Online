@@ -1,4 +1,4 @@
-// --- SEU CÓDIGO EXISTENTE INÍCIO ---
+
 const firebaseConfig = {
     apiKey: "AIzaSyCy3aUY2OWKXFMyZBkX1NQEL8haZbdHSyk",
     authDomain: "garagem-online-34080.firebaseapp.com",
@@ -8,7 +8,7 @@ const firebaseConfig = {
     appId: "1:804666498964:web:934f99d6b039c453eaf981"
 };
 
-// Inicialize o Firebase
+// Inicializa o Firebase
 const app = firebase.initializeApp(firebaseConfig);
 const auth = app.auth();
 const db = app.firestore();

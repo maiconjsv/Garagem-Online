@@ -91,6 +91,11 @@ header{
         font-size: 57px;
         margin-top: 40%;
     }
+    main{
+        align-items: center;
+        display: flex;
+        justify-content: center;
+    }
     .loginArea{
         border-radius: 20%;
         width: 40vw;
@@ -124,9 +129,10 @@ header{
         align-items: center;
         justify-content: center;
         height: 100%;
+        display: flex;
     }
         header{
-            height: 100vh;
+            height: 100%;
             align-items: center;
         }
             header h1{
@@ -134,14 +140,15 @@ header{
                 margin-top: 30px;
             }
         .loginArea{
-            width: 500px;
+            width: 100%;
             height: 100%;
             padding: 0;
             background-color: rgb(253, 176, 34);
         }
             
         main{
-            height: 100vh;
+            height: 100%;
+            width: 60%;
             
         }
 }

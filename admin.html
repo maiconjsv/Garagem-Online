@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel do higienizador</title>
     <link rel="stylesheet" href="/src/css/admin-style.css">
+    <link rel="shortcut icon" href="src/imgs/favicon.ico" type="image/x-icon">
 </head>
 <body>
     <header>
         <!-- Estes divs podem ser atualizados com dados do Firebase do usuário logado -->
         <div class="headerInfo" id="nameInfo">Carregando nome...</div>
         <div class="headerInfo" id="companyInfo">Carregando empresa...</div>
-        <!-- Certifique-se de que este 'div' funciona como um botão clicável, ou mude para <button> -->
+        
         <div class="headerInfo" id="logoutButton">Desconectar-se</div>
     </header>
 
@@ -72,9 +73,9 @@
         </div>
     </main>
 
-    <footer> <small>Versão 0.0</small> <small><a href="mailto:maiconjnsv@gmail.com">Suporte</a></small></footer>
+    <footer> <small>Versão 0.1</small> <small><a href="mailto:maiconjnsv@gmail.com">Suporte</a></small></footer>
 
-    <!-- SEMPRE carregue os SDKs do Firebase primeiro -->
+    <!--SDKs do Firebase primeiro -->
     <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-firestore.js"></script>

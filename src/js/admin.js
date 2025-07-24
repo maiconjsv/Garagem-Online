@@ -53,12 +53,54 @@ if (logoutButton) {
     });
 }
 
+//Lógica de consulta de quantos veiculos tem no pátio
+const patioDivElement = document.getElementById('patioDivId');
+const veiculosInfoElement = document.getElementById('veiculosInfo');
+
+function loadVeiculosNoPatio() {
+    if (!veiculosInfoElement) {
+        console.error("Elemento 'veiculosInfo' não encontrado! Verifique o ID no seu HTML.");
+        return;
+    }
+
+    veiculosInfoElement.textContent = "Carregando veículos..."; // Mensagem de carregamento
+
+    // Verifica se o Firestore está inicializado
+    if (!db) {
+        console.error("Firestore não inicializado. Verifique a configuração do Firebase.");
+        veiculosInfoElement.textContent = "Erro: Firestore não disponível.";
+        return;
+    }
+
+    // Cria uma consulta para buscar veículos com status 'no_patio'
+    const veiculosCollectionRef = db.collection("veiculosHigienizados");
+    const q = veiculosCollectionRef.where('status', '==', 'disponivel'); // Filtra pelo status 'no_patio'
+
+    // Usa onSnapshot para obter atualizações em tempo real
+    q.onSnapshot((querySnapshot) => {
+        const totalVeiculos = querySnapshot.size; // O número de documentos retornados pela consulta
+
+        if (veiculosInfoElement) {
+            if (totalVeiculos === 0) {
+                veiculosInfoElement.textContent = "Nenhum veículo no pátio.";
+            } else if (totalVeiculos === 1) {
+                veiculosInfoElement.textContent = `${totalVeiculos} veículo no pátio.`;
+            } else {
+                veiculosInfoElement.textContent = `${totalVeiculos} veículos no pátio.`;
+            }
+        }
+    }); 
+} 
+
+    
+loadVeiculosNoPatio();
+
 
 // =============================================================
 // FUNÇÃO PARA REGISTRAR VEÍCULO HIGIENIZADO
-// Esta função e seu listener são chamados APÓS o DOM ser completamente carregado
+// Esta função é chamada APÓS o DOM ser completamente carregado
 async function registrarVeiculoHigienizado() {
-    // 1. Pegar os elementos HTML pelos seus IDs
+    
     const placaInput = document.getElementById('placaInput');
     const modeloInput = document.getElementById('modeloInput');
     const corInput = document.getElementById('corInput');
@@ -101,7 +143,8 @@ async function registrarVeiculoHigienizado() {
                 cor: cor,
                 dataHigienizacao: data,
                 dataRegistro: new Date(),
-                userId: auth.currentUser.uid
+                userId: auth.currentUser.uid,
+                status: "disponivel"
             });
 
             console.log("Documento escrito com ID: ", docRef.id);

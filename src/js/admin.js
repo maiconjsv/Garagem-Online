@@ -328,8 +328,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         .get();
 
                     if (querySnapshot.empty) {
-                        console.log('Nenhum veículo higienizado encontrado com esta placa.');
-                        consultInfos.innerHTML = '<p style="color: orange;">Placa não encontrada nos registros de higienização.</p>';
+                        console.log('Nenhum veículo encontrado com esta placa.');
+                        consultInfos.innerHTML = '<p style="color: orange;">Placa não encontrada nos registros.</p>';
                     } else {
                         let htmlContent = '<h3>Detalhes do Veículo Encontrado:</h3>';
                         querySnapshot.forEach((doc) => {

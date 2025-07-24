@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel do higienizador</title>
+    <title>Painel de controle</title>
     <link rel="stylesheet" href="/src/css/admin-style.css">
     <link rel="shortcut icon" href="src/imgs/favicon.ico" type="image/x-icon">
 </head>
@@ -33,12 +33,12 @@
             </div>
         </div>
         <div class="workSpace">
-            <div class="workLink " id="workStart">Registrar Higienização</div>
+            <div class="workLink " id="workStart">Registrar Entrada</div>
             <div class="workLink " id="consult">Consultar veículo</div>
             <div class="workLink" id="removeCar">Registrar Saida de veículo </div>
 
             <div class="higienStart wOff" id="higienRegister">
-                <p>Informações do veículo higienizado</p>
+                <p>Informações do veículo </p>
                 <input type="text" placeholder="Placa" id="placaInput" maxlength="7" minlength="7" required  pattern="[A-Z]{3}[0-9][A-Z][0-9]{2}">
                 <input type="text" placeholder="Modelo do veículo" id="modeloInput" required>
                 <input type="text" placeholder="Cor" required id="corInput">
@@ -66,16 +66,16 @@
 
 
             <div class="patioDiv patioDivOff" id="patioDivId">
-                <p>Total de veículos no pátio...</p>
-                <p>Última Higienização...</p>
+                <p>Total de veículos no pátio</p>
+                <p id="veiculosInfo">Carregando veículos...</p>
                 <button id="patioCloseButton">Fechar</button>
             </div>
         </div>
     </main>
 
-    <footer> <small>Versão 0.1</small> <small><a href="mailto:maiconjnsv@gmail.com">Suporte</a></small></footer>
+    <footer> <small>Versão 0.2</small> <small><a href="mailto:maiconjnsv@gmail.com">Suporte</a></small></footer>
 
-    <!--SDKs do Firebase primeiro -->
+    
     <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-firestore.js"></script>

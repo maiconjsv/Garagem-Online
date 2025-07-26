@@ -25,7 +25,9 @@
                 <!--<button id="signUpButton">Cadastrar</button> removido-->
                 <button id="signInButton">Entrar</button>
            </div>
-
+              
+                    <small>Versão 0.3</small>
+                
            <div id="user-info">
                 <h2>Usuário Logado</h2>
                 <p><strong>Email:</strong> <span id="user-email"></span></p>
@@ -42,12 +44,8 @@
     <!-- SDK para o Firebase Authentication -->
     <script src="https://www.gstatic.com/firebasejs/7.8.0/firebase-auth.js"></script>
 
-    <!-- SEU CÓDIGO JAVASCRIPT AGORA VEM AQUI, DEPOIS DOS SDKs DO FIREBASE -->
     <script>
-        // Não precisamos do import aqui, pois os scripts acima já colocaram 'firebase' no escopo global
         // import { initializeApp } from "firebase/app"; // REMOVIDO
-
-        // Sua configuração do Firebase (está correta!)
         const firebaseConfig = {
           apiKey: "AIzaSyCy3aUY2OWKXFMyZBkX1NQEL8haZbdHSyk",
           authDomain: "garagem-online-34080.firebaseapp.com",
@@ -60,15 +58,13 @@
         // Initialize Firebase usando a API de namespace (v7)
         firebase.initializeApp(firebaseConfig);
 
-        // Obtenha a instância de autenticação diretamente do objeto global 'firebase'
-        const auth = firebase.auth(); // <-- CORREÇÃO AQUI!
+        const auth = firebase.auth();
 
-        // Referências aos elementos HTML
         const emailInput = document.getElementById('email');
         const passwordInput = document.getElementById('password');
         const signUpButton = document.getElementById('signUpButton');
         const signInButton = document.getElementById('signInButton');
-        const signOutButton = document.getElementById('signOutButton'); // Este botão estava fora do auth-ui original
+        const signOutButton = document.getElementById('signOutButton');
         const authUiDiv = document.getElementById('auth-ui');
         const userInfoDiv = document.getElementById('user-info');
         const userEmailSpan = document.getElementById('user-email');
@@ -89,7 +85,7 @@
             }
         });
 
-        // Funções para cadastro, login e logout
+        // Funções para login e logout
 
         signInButton.addEventListener('click', () => {
             const email = emailInput.value;

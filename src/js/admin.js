@@ -1,6 +1,3 @@
-// =============================================================
-// Configuração do Firebase
-// Certifique-se de que esta configuração está correta para seu projeto
 const firebaseConfig = {
     apiKey: "AIzaSyCy3aUY2OWKXFMyZBkX1NQEL8haZbdHSyk",
     authDomain: "garagem-online-34080.firebaseapp.com",
@@ -72,9 +69,9 @@ function loadVeiculosNoPatio() {
         return;
     }
 
-    // Cria uma consulta para buscar veículos com status 'no_patio'
+    // Cria uma consulta para buscar veículos com status 'disponivel'
     const veiculosCollectionRef = db.collection("veiculosHigienizados");
-    const q = veiculosCollectionRef.where('status', '==', 'disponivel'); // Filtra pelo status 'no_patio'
+    const q = veiculosCollectionRef.where('status', '==', 'disponivel'); // Filtra pelo status 'disponivel'
 
     // Usa onSnapshot para obter atualizações em tempo real
     q.onSnapshot((querySnapshot) => {
@@ -169,7 +166,6 @@ async function registrarVeiculoHigienizado() {
 // dentro de um DOMContentLoaded para garantir que os elementos HTML existam antes de manipulá-los.
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- CHAME A FUNÇÃO DE REGISTRO DE VEÍCULO AQUI! ---
     // Isso garante que o listener do botão 'registerHigien' seja ativado.
     registrarVeiculoHigienizado();
 
@@ -219,6 +215,10 @@ document.addEventListener('DOMContentLoaded', () => {
             // Limpar o input da placa ao voltar
             if (licensePlateInput) {
                 licensePlateInput.value = '';
+            }
+            // Limpar o input do modelo ao voltar
+            if (carModeloConsult) {
+                carModeloConsult.value = '';
             }
         });
     }
@@ -300,6 +300,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     alert(`Veículo com a placa "${placaDigitada}" não encontrado nos registros de higienização.`);
                     console.warn(`Tentativa de registrar saída de veículo não existente: ${placaDigitada}`);
                 } else {
+                    // Para cada documento encontrado (embora placas geralmente sejam únicas,
+                    // esta abordagem lida com múltiplas entradas se houver algum erro de duplicação)
                     querySnapshot.forEach(async (documentoVeiculo) => {
                         const documentId = documentoVeiculo.id;
                         const docRef = veiculosCollectionRef.doc(documentId);
@@ -312,7 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         });
 
                         alert(`Saída do veículo de placa "${placaDigitada}" registrada com sucesso!`);
-                        console.log(`Documento do veículo ${placaDigitada} (ID: ${documentId}) atualizado para 'saída_patio'.`);
+                        console.log(`Documento do veículo ${placaDigitada} (ID: ${documentId}) atualizado para 'saida_patio'.`);
 
                         // Limpar os campos e fechar a div após sucesso
                         placaSaidaInput.value = '';
@@ -339,107 +341,128 @@ document.addEventListener('DOMContentLoaded', () => {
     const licensePlateInput = document.getElementById('carPlacaConsult');
     const consultCarButton = document.getElementById('carConsultButton');
     const consultInfos = document.getElementById('consultInfos');
+    const carModeloConsult = document.getElementById('carModeloConsult'); // Adicionado para referenciar o input de modelo
 
     // Verificar se os elementos foram encontrados (para ajudar no debug, caso os IDs no HTML estejam errados)
     if (!licensePlateInput) console.error("ERRO: Elemento 'carPlacaConsult' não encontrado! Verifique o ID no seu HTML.");
     if (!consultCarButton) console.error("ERRO: Elemento 'carConsultButton' não encontrado! Verifique o ID no seu HTML.");
     if (!consultInfos) console.error("ERRO: Elemento 'consultInfos' não encontrado! Verifique o ID no seu HTML.");
+    if (!carModeloConsult) console.error("ERRO: Elemento 'carModeloConsult' não encontrado! Verifique o ID no seu HTML."); // Verificação para o novo input
 
-
-    if (consultCarButton && licensePlateInput && consultInfos) {
+    if (consultCarButton && licensePlateInput && consultInfos && carModeloConsult) {
         consultCarButton.addEventListener('click', async () => {
 
             const licensePlate = licensePlateInput.value.trim().toUpperCase();
+            const carModel = carModeloConsult.value.trim(); // Pega o valor do input do modelo
 
             // Limpa o conteúdo da div de informações a cada nova consulta e dá feedback
             consultInfos.innerHTML = '<p>Buscando dados...</p>';
 
-            if (licensePlate.length === 7) {
-                console.log(`Tentando consultar dados para a placa: ${licensePlate}`);
-
-                if (!auth.currentUser) {
-                    console.warn('Consulta Firestore negada: Usuário não autenticado.');
-                    consultInfos.innerHTML = '<p style="color: red;">Erro: Você precisa estar logado para consultar veículos. Por favor, faça login.</p>';
-                    return;
-                }
-
-                try {
-                    const veiculosCollectionRef = db.collection("veiculosHigienizados");
-
-                    const querySnapshot = await veiculosCollectionRef
-                        .where('placa', '==', licensePlate)
-                        .get();
-
-                    if (querySnapshot.empty) {
-                        console.log('Nenhum veículo encontrado com esta placa.');
-                        consultInfos.innerHTML = '<p style="color: orange;">Placa não encontrada nos registros.</p>';
-                    } else {
-                        let htmlContent = '<h3>Detalhes do Veículo Encontrado:</h3>';
-                        querySnapshot.forEach((doc) => {
-                            const dadosVeiculo = doc.data();
-                            console.log(`Veículo encontrado: ${doc.id} => `, dadosVeiculo);
-
-                            let dataFormatadaHigienizacao = 'N/A';
-                            // Tenta converter o Timestamp do Firebase
-                            if (dadosVeiculo.dataHigienizacao && typeof dadosVeiculo.dataHigienizacao.toDate === 'function') {
-                                dataFormatadaHigienizacao = dadosVeiculo.dataHigienizacao.toDate().toLocaleDateString('pt-BR');
-                            } else if (dadosVeiculo.dataHigienizacao) {
-                                // Tenta tratar como string ou objeto Date comum
-                                try {
-                                    dataFormatadaHigienizacao = new Date(dadosVeiculo.dataHigienizacao).toLocaleDateString('pt-BR');
-                                } catch (e) {
-                                    dataFormatadaHigienizacao = dadosVeiculo.dataHigienizacao;
-                                }
-                            }
-
-                            // --- LÓGICA PARA EXIBIR O STATUS DE SAÍDA ---
-                            let statusVeiculo = dadosVeiculo.status || 'no_patio'; // Assume 'no_patio' se não houver status
-                            let infoSaida = '';
-
-                            if (statusVeiculo === 'saida_patio') {
-                                let dataSaidaFormatada = 'N/A';
-                                // Verifica se dataSaida é um Timestamp do Firebase ou uma string/data normal
-                                if (dadosVeiculo.dataSaida && typeof dadosVeiculo.dataSaida.toDate === 'function') {
-                                    dataSaidaFormatada = dadosVeiculo.dataSaida.toDate().toLocaleDateString('pt-BR') + ' às ' + dadosVeiculo.dataSaida.toDate().toLocaleTimeString('pt-BR');
-                                } else if (dadosVeiculo.dataSaida) {
-                                    try {
-                                        // Tenta converter para Date caso seja uma string de data
-                                        dataSaidaFormatada = new Date(dadosVeiculo.dataSaida).toLocaleDateString('pt-BR') + ' às ' + new Date(dadosVeiculo.dataSaida).toLocaleTimeString('pt-BR');
-                                    } catch (e) {
-                                        // Se não for uma data válida, exibe como está
-                                        dataSaidaFormatada = dadosVeiculo.dataSaida;
-                                    }
-                                }
-                                infoSaida = `<p style="color: red; font-weight: bold;">STATUS: SAÍDA DO PÁTIO</p>
-                                             <p><strong>Data da Saída:</strong> ${dataSaidaFormatada}</p>
-                                             <p><strong>Motivo da Saída:</strong> ${dadosVeiculo.motivoSaida || 'N/A'}</p>
-                                             <p><strong>Registrado por (Saída):</strong> ${dadosVeiculo.registradoPorSaida || 'N/A'}</p>`;
-                            } else {
-                                infoSaida = `<p style="color: green; font-weight: bold;">STATUS: NO PÁTIO</p>`;
-                            }
-                            // --- FIM DA LÓGICA DE EXIBIÇÃO DE STATUS ---
-
-
-                            htmlContent += `
-                                <div style="border-bottom: 1px dashed #eee; padding-bottom: 10px; margin-bottom: 10px;">
-                                    <p><strong>Placa:</strong> ${dadosVeiculo.placa}</p>
-                                    <p><strong>Modelo:</strong> ${dadosVeiculo.modelo}</p>
-                                    <p><strong>Cor:</strong> ${dadosVeiculo.cor}</p>
-                                    <p><strong>Última Higienização:</strong> ${dataFormatadaHigienizacao}</p>
-                                    <p><strong>Registrado por (Higienização):</strong> ${dadosVeiculo.userId || 'N/A'}</p>
-                                    ${infoSaida}
-                                </div>
-                            `;
-                        });
-                        consultInfos.innerHTML = htmlContent;
-                    }
-                } catch (error) {
-                    console.error("Erro ao consultar veículo no Firestore:", error);
-                    consultInfos.innerHTML = `<p style="color: red;">Erro ao consultar veículo: ${error.message}</p>`;
-                }
-            } else {
-                consultInfos.innerHTML = '<p style="color: orange;">Por favor, digite uma placa válida com 7 caracteres (ex: ABC1234).</p>';
+            // Verifica se o usuário está autenticado primeiro
+            if (!auth.currentUser) {
+                console.warn('Consulta Firestore negada: Usuário não autenticado.');
+                consultInfos.innerHTML = '<p style="color: red;">Erro: Você precisa estar logado para consultar veículos. Por favor, faça login.</p>';
+                return;
             }
+
+            let querySnapshot;
+            const veiculosCollectionRef = db.collection("veiculosHigienizados");
+
+            // Lógica para decidir qual tipo de busca realizar
+            if (licensePlate.length === 7) { // Prioriza a busca pela placa se uma placa válida for digitada
+                console.log(`Tentando consultar dados para a placa: ${licensePlate}`);
+                querySnapshot = await veiculosCollectionRef.where('placa', '==', licensePlate).get();
+            } else if (carModel) { // Se não houver placa válida, tenta a busca pelo modelo
+                console.log(`Tentando consultar dados para o modelo: ${carModel}`);
+                // Para buscar por partes do modelo, ou modelos semelhantes, você precisaria de um índice de texto completo ou de lógica de busca mais avançada.
+                // Esta busca será por correspondência exata do modelo.
+                querySnapshot = await veiculosCollectionRef.where('modelo', '==', carModel).get();
+            } else {
+                // Nem placa nem modelo foram digitados
+                consultInfos.innerHTML = '<p style="color: orange;">Por favor, digite uma placa válida (7 caracteres) ou um modelo para consultar.</p>';
+                return; // Sai da função se não houver critério de busca
+            }
+
+            if (querySnapshot.empty) {
+                console.log('Nenhum veículo encontrado com os critérios fornecidos.');
+                consultInfos.innerHTML = '<p style="color: orange;">Nenhum veículo encontrado com os critérios fornecidos.</p>';
+            } else {
+                let htmlContent = '';
+                if (licensePlate.length === 7) { // Se a busca foi por placa, exibe todos os detalhes como antes
+                     htmlContent = '<h3>Detalhes do Veículo Encontrado:</h3>';
+                     querySnapshot.forEach((doc) => {
+                        const dadosVeiculo = doc.data();
+                        console.log(`Veículo encontrado: ${doc.id} => `, dadosVeiculo);
+
+                        let dataFormatadaHigienizacao = 'N/A';
+                        // Tenta converter o Timestamp do Firebase
+                        if (dadosVeiculo.dataHigienizacao && typeof dadosVeiculo.dataHigienizacao.toDate === 'function') {
+                            dataFormatadaHigienizacao = dadosVeiculo.dataHigienizacao.toDate().toLocaleDateString('pt-BR');
+                        } else if (dadosVeiculo.dataHigienizacao) {
+                            // Tenta tratar como string ou objeto Date comum
+                            try {
+                                dataFormatadaHigienizacao = new Date(dadosVeiculo.dataHigienizacao).toLocaleDateString('pt-BR');
+                            } catch (e) {
+                                dataFormatadaHigienizacao = dadosVeiculo.dataHigienizacao;
+                            }
+                        }
+
+                        // --- LÓGICA PARA EXIBIR O STATUS DE SAÍDA ---
+                        let statusVeiculo = dadosVeiculo.status || 'disponivel'; // Usa 'disponivel' como padrão, alinhado com loadVeiculosNoPatio
+                        let infoSaida = '';
+
+                        if (statusVeiculo === 'saida_patio') {
+                            let dataSaidaFormatada = 'N/A';
+                            // Verifica se dataSaida é um Timestamp do Firebase ou uma string/data normal
+                            if (dadosVeiculo.dataSaida && typeof dadosVeiculo.dataSaida.toDate === 'function') {
+                                dataSaidaFormatada = dadosVeiculo.dataSaida.toDate().toLocaleDateString('pt-BR') + ' às ' + dadosVeiculo.dataSaida.toDate().toLocaleTimeString('pt-BR');
+                            } else if (dadosVeiculo.dataSaida) {
+                                try {
+                                    // Tenta converter para Date caso seja uma string de data
+                                    dataSaidaFormatada = new Date(dadosVeiculo.dataSaida).toLocaleDateString('pt-BR') + ' às ' + new Date(dadosVeiculo.dataSaida).toLocaleTimeString('pt-BR');
+                                } catch (e) {
+                                    // Se não for uma data válida, exibe como está
+                                    dataSaidaFormatada = dadosVeiculo.dataSaida;
+                                }
+                            }
+                            infoSaida = `<p style="color: red; font-weight: bold;">STATUS: SAÍDA DO PÁTIO</p>
+                                         <p><strong>Data da Saída:</strong> ${dataSaidaFormatada}</p>
+                                         <p><strong>Motivo da Saída:</strong> ${dadosVeiculo.motivoSaida || 'N/A'}</p>
+                                         <p><strong>Registrado por (Saída):</strong> ${dadosVeiculo.registradoPorSaida || 'N/A'}</p>`;
+                        } else {
+                            infoSaida = `<p style="color: green; font-weight: bold;">STATUS: NO PÁTIO</p>`;
+                        }
+                        // --- FIM DA LÓGICA DE EXIBIÇÃO DE STATUS ---
+
+
+                        htmlContent += `
+                            <div style="border-bottom: 1px dashed #eee; padding-bottom: 10px; margin-bottom: 10px;">
+                                <p><strong>Placa:</strong> ${dadosVeiculo.placa}</p>
+                                <p><strong>Modelo:</strong> ${dadosVeiculo.modelo}</p>
+                                <p><strong>Cor:</strong> ${dadosVeiculo.cor}</p>
+                                <p><strong>Última Higienização:</strong> ${dataFormatadaHigienizacao}</p>
+                                <p><strong>Registrado por (Higienização):</strong> ${dadosVeiculo.userId || 'N/A'}</p>
+                                ${infoSaida}
+                            </div>
+                        `;
+                    });
+                } else if (carModel) { // Se a busca foi por modelo, exibe apenas placa e cor
+                    htmlContent = `<h3>Veículos Encontrados com o Modelo "${carModel}":</h3><ul style="list-style: none; padding: 0;">`;
+                    querySnapshot.forEach((doc) => {
+                        const dadosVeiculo = doc.data();
+                        htmlContent += `
+                            <li style="margin-bottom: 5px;">
+                                <span style="font-weight: bold; color: white;">Placa:</span> ${dadosVeiculo.placa}, 
+                                <span style="font-weight: bold; color: white;">Cor:</span> ${dadosVeiculo.cor}
+                            </li>`;
+                    });
+                    htmlContent += '</ul>';
+                }
+                consultInfos.innerHTML = htmlContent;
+            }
+            // Limpa os campos de input após a consulta, independentemente do tipo de busca
+            licensePlateInput.value = '';
+            carModeloConsult.value = '';
         });
     }
 

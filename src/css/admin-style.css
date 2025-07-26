@@ -157,7 +157,7 @@ main{
 
     #consultInfos{
         height: 30%;
-        width: 100%;
+        width: 90%;
         background-color: rgb(6, 65, 6) ;
         display: flex;
         align-items: center;
@@ -183,6 +183,8 @@ main{
     .patioDiv.patioDivOff{
         display: none;
     }
+
+    
 
     .removeCarWork{
         display: flex;
